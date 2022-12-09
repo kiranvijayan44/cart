@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription  %}
+    {% if category %}
+        {{ category.description | truncatewords:155 }}
+    {% else %}
+        Welcome to f-cart..  All New collection..
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} - F CART
+    {% else %}
+        F CART
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+    <div>
+        <div class="first1">
+            <p><a href="{% url 'cartapp:allProdCat' %}">Products</a> </p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if category %}
+    <div>
+        <img src="{{ category.img.url }}" alt="{{ category.name }}" class="banner">
+    </div>
+    <br />
+    <div class="first">
+        <h1>{{category.name}}</h1>
+        <h4>{{category.des}}</h4>
+    </div>
+    {% else %}
+    <div>
+        <img src="{% static 'img/banner.jpg' %}" alt="product" class="banner">
+    </div>
+    <br />
+    <div>
+        <h1>Collections</h1>
+        <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula augue odio, ac efficitur metus tempus sollicitudin. Quisque vestibulum ex et massa scelerisque hendrerit. Phasellus metus ex, bibendum non arcu vitae, aliquet scelerisque enim. Maecenas ultrices elit non elementum tincidunt. Mauris fermentum lectus vitae pulvinar accumsan. Aenean eu turpis vel diam fermentum vestibulum ac nec neque. Pellentesque congue malesuada fringilla. Quisque quis venenatis nisi, sit amet maximus ligula. In faucibus interdum rutrum. Suspendisse potenti. Pellentesque tristique sit amet turpis et elementum. Nam tempor vulputate nunc quis congue. Nunc sed dui ornare, congue turpis nec, sodales odio. Sed nibh mi, feugiat ut fermentum sit amet, cursus ac purus.</p>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row mx-auto">
+            {% for product in products.object_list%}
+            <div class="col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card" style="width: 18rem;">
+                <a href="{{product.get_url}}"><img src="{{product.img.url}}" class="product_img"></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price :{{product.price}}<span>&#8377;</span></li>
+                    <li class="list-group-item">Stock :{{product.stock}}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="{% url 'bag:add_bag' product.id %}" class="btn btn-primary">Add to Cart</a>
+                    <a href="{{product.get_url}}" class="btn btn-info">Details</a>
+                </div>
+            </div></div>
+            {% endfor %}
+        </div>
+        <div class="paginator">
+            {% if product.paginator.num_page > 1%}
+            {% endif %} <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {%if product.number == pg %} active {% endif %}">{{pg}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

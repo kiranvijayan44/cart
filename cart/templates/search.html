@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription  %}
+        Welcome to f-cart..  All New collection..
+{% endblock %}
+{% block title  %}
+    Search
+{% endblock %}
+{% block content %}
+<div class="text-center">
+    <h1 class="text-center search_body">You have searched for <b>"{{query}}"</b></h1>
+</div>
+<div class="container">
+        <div class="row mx-auto">
+            {% for product in products %}
+            <div class="col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card" style="width: 18rem;">
+                <a href="{{product.get_url}}"><img src="{{product.img.url}}" class="product_img"></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price :{{product.price}}<span>&#8377;</span></li>
+                    <li class="list-group-item">Stock :{{product.stock}}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="{% url 'bag:add_bag' product.id %}" class="btn btn-primary">Add to Cart</a>
+                    <a href="{{product.get_url}}" class="btn btn-primary">Another link</a>
+                </div>
+            </div></div>
+            {% empty %}
+            <div class="row mx-auto text-center">
+                <img src="{% static 'img/search_error.gif' %}" alt="empty" class="search_img">
+                <h3 class="search_error">No products found</h3>
+                <p><a href="{% url 'cartapp:allProdCat' %}" class="btn btn btn-primary btn-sm">Continue Shopping</a></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
